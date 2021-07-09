@@ -77,7 +77,12 @@ const readInput = async(message)=>{
 }
 
 const showTaskList = async (array=[], complete=true)=>{
-    const filter = array.filter(e=> e.completeDate == completed?!null:null)
+    var filter = []
+    if (complete) {
+        filter= array.filter(e=> e.completeDate !== null);
+    } else {
+        filter= array.filter(e=> e.completeDate === null);
+    }
     const list = await inquire.prompt([{
         type: 'rawlist', 
         name: 'List', 
@@ -87,11 +92,19 @@ const showTaskList = async (array=[], complete=true)=>{
             name: `${e.description}` 
         }) )
     }])
-    return list 
+    const {List} = list;
+    return List
 }
 
 const showTasks = async (array=[], all = false , completed= true)=> {
-    const filter= all?array:array.filter(e=> e.completeDate == completed?!null:null)
+    var filter = array;
+    if (!all) {
+        if (completed) {
+            filter= array.filter(e=> e.completeDate !== null);
+        } else {
+            filter= array.filter(e=> e.completeDate === null);
+        }
+    }
     filter.forEach((e, index)=>{
         const  {description, completeDate} = e;
         const state= (completeDate)

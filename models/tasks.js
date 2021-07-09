@@ -13,7 +13,6 @@ class Tasks {
     constructor(){
         this._list = {}
     }
-
     get taskArr(){
         const tasks = [];
         Object.keys(this._list).forEach(key=>{
@@ -31,7 +30,16 @@ class Tasks {
         const task = new Task(description);
         this._list[task.id] = task;
         saveData(this._list)
+    }
+    completeTask(id){
+        this._list[id].completeDate = new Date();
+        saveData(this._list)
     }   
+    deleteTask(id){
+        delete this._list[id];
+        console.log(id)
+        console.log(this._list);
+    }
 
     
 }

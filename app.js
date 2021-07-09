@@ -1,5 +1,5 @@
 require('colors');
-const {inquireMenu, pause, readInput,showTasks} = require('./helpers/inquire');
+const {inquireMenu, pause, readInput,showTasks,showTaskList} = require('./helpers/inquire');
 const Tasks = require('./models/tasks');
 const {readData} = require('./helpers/saveFile');
 const main = async()=>{
@@ -13,7 +13,7 @@ const main = async()=>{
         opt = await inquireMenu();
         switch (opt) {
             case '1':
-                const des= await readInput('descripcion: ')
+                const des = await readInput('descripcion: ')
                 tasks.createTask(des) 
                 console.log("Task created")
                 break;
@@ -23,15 +23,22 @@ const main = async()=>{
             case '3' :
                 await showTasks(tasks.taskArr, false, true)
                 break;
-            case '3' :
+            case '4' :
                 await showTasks(tasks.taskArr, false, false)
+                break;
+            case '5':
+                const selected = await showTaskList(tasks.taskArr,  false)
+                tasks.completeTask(selected)
+                console.log("Task Complete")
+                break;
+            case '6':
+                const selectedtodelete = await showTaskList(tasks.taskArr,  false)
+                tasks.deleteTask(selectedtodelete)
+
                 break;
             default:
                 break;
         }
-        // console.log(task)
-        // tasks._list[task.id]= task
-        // console.log(tasks)
         await pause();    
     } while (opt !=='0' );
 }
